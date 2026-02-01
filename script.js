@@ -1,240 +1,169 @@
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+// =====================
+// Loader
+// =====================
+const loader = document.getElementById("loader");
+window.addEventListener("load", () => {
+  if (!loader) return;
+  setTimeout(() => loader.classList.add("hidden"), 700);
+});
 
-const SUPABASE_URL = "https://huquhmswcygwtuxmwfhg.supabase.co";
-const SUPABASE_KEY = "sb_publishable_iTAzRpmW5gNYvbETn4IXdg_kJ0mZgju";
+// =====================
+// Explore -> Menu overlay
+// =====================
+const hero = document.getElementById("hero");
+const menuScreen = document.getElementById("menuScreen");
+const exploreBtn = document.getElementById("exploreBtn");
+const closeMenuBtn = document.getElementById("closeMenuBtn");
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-const BUCKET = "event_flyers";
-
-const form = document.getElementById("eventForm");
-const resetBtn = document.getElementById("resetBtn");
-const saveBtn = document.getElementById("saveBtn");
-const msg = document.getElementById("msg");
-const ok = document.getElementById("ok");
-
-const flyerInput = document.getElementById("flyer");
-const flyerPreview = document.getElementById("flyerPreview");
-const flyerPlaceholder = document.getElementById("flyerPlaceholder");
-
-const ticketsWrap = document.getElementById("ticketsWrap");
-const addTicketBtn = document.getElementById("addTicketBtn");
-
-function showError(text) {
-  msg.textContent = text;
-  msg.classList.remove("hidden");
-  ok.classList.add("hidden");
-}
-function showOk(text) {
-  ok.textContent = text;
-  ok.classList.remove("hidden");
-  msg.classList.add("hidden");
-}
-function clearMessages() {
-  msg.classList.add("hidden");
-  ok.classList.add("hidden");
+function isMenuOpen() {
+  return !!hero && hero.classList.contains("menu-open");
 }
 
-async function requireAuth() {
-  const { data: { session }, error } = await supabase.auth.getSession();
-  if (error) throw error;
-  if (!session) {
-    window.location.href = "./login.html";
-    return null;
+function openMenu() {
+  if (!hero || !menuScreen) return;
+  hero.classList.add("menu-open");
+  menuScreen.setAttribute("aria-hidden", "false");
+}
+
+function closeMenu() {
+  if (!hero || !menuScreen) return;
+  hero.classList.remove("menu-open");
+  menuScreen.setAttribute("aria-hidden", "true");
+}
+
+exploreBtn?.addEventListener("click", openMenu);
+closeMenuBtn?.addEventListener("click", closeMenu);
+
+menuScreen?.addEventListener("click", (e) => {
+  if (e.target === menuScreen) closeMenu();
+});
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeMenu();
+});
+
+// ============================
+// Smoke that reacts to cursor
+// ============================
+const canvas = document.getElementById("bg");
+const ctx = canvas?.getContext?.("2d", { alpha: true });
+
+if (canvas && ctx) {
+  let w, h, dpr;
+  let particles = [];
+  const pointer = { x: 0, y: 0, vx: 0, vy: 0, active: false };
+
+  function resize() {
+    dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+    w = canvas.width = Math.floor(window.innerWidth * dpr);
+    h = canvas.height = Math.floor(window.innerHeight * dpr);
+    canvas.style.width = window.innerWidth + "px";
+    canvas.style.height = window.innerHeight + "px";
+
+    particles = Array.from({ length: 90 }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: (25 + Math.random() * 140) * dpr,
+      vx: (-0.18 + Math.random() * 0.36) * dpr,
+      vy: (-0.12 + Math.random() * 0.24) * dpr,
+      a: 0.02 + Math.random() * 0.05,
+    }));
   }
-  return session;
-}
 
-function slugFileName(name = "flyer") {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
+  window.addEventListener("resize", resize);
+  resize();
 
-function ticketRowTemplate() {
-  return `
-    <div class="ticketRow rounded-2xl border border-white/10 bg-white/5 p-4">
-      <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 items-start">
-        <div class="sm:col-span-3">
-          <label class="block text-[11px] uppercase tracking-[0.14em] text-white/60">Ticket name</label>
-          <div class="mt-2 relative">
-            <span class="absolute inset-y-0 left-3 grid place-items-center text-white/40">
-              <i class="fa-solid fa-ticket"></i>
-            </span>
-            <input
-              type="text"
-              class="ticketName w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30"
-              placeholder="Regular / VIP / Table / Backstage..."
-              required
-            />
-          </div>
-        </div>
+  function setPointer(clientX, clientY) {
+    if (isMenuOpen()) return;
 
-        <div class="sm:col-span-2">
-          <label class="block text-[11px] uppercase tracking-[0.14em] text-white/60">Price (₦)</label>
-          <div class="mt-2 relative">
-            <span class="absolute inset-y-0 left-3 grid place-items-center text-white/40">
-              <i class="fa-solid fa-naira-sign"></i>
-            </span>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              class="ticketPrice w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-12 py-3 outline-none focus:border-white/30"
-              placeholder="0"
-              required
-            />
-            <button type="button"
-              class="removeTicketBtn absolute inset-y-0 right-2 my-2 px-3 rounded-xl border border-white/10 bg-black/20 hover:bg-red-500/10 text-white/70"
-              aria-label="Remove ticket">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-}
+    const x = clientX * dpr;
+    const y = clientY * dpr;
 
-function addTicketRow(defaultName = "", defaultPrice = "") {
-  ticketsWrap.insertAdjacentHTML("beforeend", ticketRowTemplate());
-  const row = ticketsWrap.lastElementChild;
-
-  const nameEl = row.querySelector(".ticketName");
-  const priceEl = row.querySelector(".ticketPrice");
-  const removeBtn = row.querySelector(".removeTicketBtn");
-
-  nameEl.value = defaultName;
-  priceEl.value = defaultPrice;
-
-  removeBtn.addEventListener("click", () => {
-    row.remove();
-  });
-}
-
-function getTicketsFromUI() {
-  const rows = [...ticketsWrap.querySelectorAll(".ticketRow")];
-  const tickets = rows.map(r => {
-    const name = r.querySelector(".ticketName")?.value?.trim();
-    const priceStr = r.querySelector(".ticketPrice")?.value;
-    const price = priceStr === "" ? null : Number(priceStr);
-    return { name, price };
-  });
-
-  // Validate
-  const clean = tickets.filter(t => t.name && t.price !== null && !Number.isNaN(t.price));
-  return clean;
-}
-
-/* Flyer preview */
-flyerInput.addEventListener("change", () => {
-  clearMessages();
-  const file = flyerInput.files?.[0];
-  if (!file) {
-    flyerPreview.classList.add("hidden");
-    flyerPlaceholder.classList.remove("hidden");
-    flyerPreview.src = "";
-    return;
+    pointer.vx = (x - pointer.x) * 0.35;
+    pointer.vy = (y - pointer.y) * 0.35;
+    pointer.x = x;
+    pointer.y = y;
+    pointer.active = true;
   }
-  const url = URL.createObjectURL(file);
-  flyerPreview.src = url;
-  flyerPreview.classList.remove("hidden");
-  flyerPlaceholder.classList.add("hidden");
-});
 
-/* Tickets */
-addTicketBtn.addEventListener("click", () => {
-  clearMessages();
-  addTicketRow();
-});
+  window.addEventListener("mousemove", (e) => setPointer(e.clientX, e.clientY), { passive: true });
+  window.addEventListener("touchstart", (e) => {
+    if (isMenuOpen()) return;
+    const t = e.touches[0];
+    if (t) setPointer(t.clientX, t.clientY);
+  }, { passive: true });
 
-/* Reset */
-resetBtn.addEventListener("click", () => {
-  form.reset();
-  clearMessages();
+  window.addEventListener("touchmove", (e) => {
+    if (isMenuOpen()) return;
+    const t = e.touches[0];
+    if (t) setPointer(t.clientX, t.clientY);
+  }, { passive: true });
 
-  flyerPreview.classList.add("hidden");
-  flyerPlaceholder.classList.remove("hidden");
-  flyerPreview.src = "";
+  window.addEventListener("touchend", () => { pointer.active = false; }, { passive: true });
 
-  ticketsWrap.innerHTML = "";
-  addTicketRow("Regular", "0");
-});
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
 
-/* Submit */
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  clearMessages();
+    const vg = ctx.createRadialGradient(
+      w * 0.5, h * 0.5, 0,
+      w * 0.5, h * 0.5, Math.max(w, h) * 0.75
+    );
+    vg.addColorStop(0, "rgba(0,0,0,0.05)");
+    vg.addColorStop(1, "rgba(0,0,0,0.75)");
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, w, h);
 
-  saveBtn.disabled = true;
-  saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
+    ctx.globalCompositeOperation = "lighter";
 
-  try {
-    const session = await requireAuth();
-    if (!session) return;
+    const influence = pointer.active ? 1 : 0.25;
+    const pushRadius = 220 * dpr;
 
-    const title = document.getElementById("title").value.trim();
-    const venue = document.getElementById("venue").value.trim();
-    const city = document.getElementById("city").value.trim();
-    const date = document.getElementById("date").value;
-    const time = document.getElementById("time").value || null;
-    const organizer_contact = document.getElementById("organizer_contact").value.trim() || null;
-    const notes = document.getElementById("notes").value.trim() || null;
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
 
-    if (!title) throw new Error("Event title is required.");
-    if (!date) throw new Error("Event date is required.");
+      if (p.x < -p.r) p.x = w + p.r;
+      if (p.x > w + p.r) p.x = -p.r;
+      if (p.y < -p.r) p.y = h + p.r;
+      if (p.y > h + p.r) p.y = -p.r;
 
-    const tickets = getTicketsFromUI();
-    if (tickets.length === 0) {
-      throw new Error("Add at least one ticket (name and price). If free, use price 0.");
+      const dx = p.x - pointer.x;
+      const dy = p.y - pointer.y;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist < pushRadius) {
+        const force = (1 - dist / pushRadius) * 0.9 * influence;
+        p.x += (dx / (dist + 0.001)) * force * 18;
+        p.y += (dy / (dist + 0.001)) * force * 18;
+
+        p.x += pointer.vx * force * 0.6;
+        p.y += pointer.vy * force * 0.6;
+      }
+
+      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+      grad.addColorStop(0, `rgba(255,255,255,${p.a})`);
+      grad.addColorStop(1, "rgba(255,255,255,0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
     }
 
-    // Upload flyer (optional)
-    let flyer_path = null;
-    const flyerFile = flyerInput.files?.[0] || null;
+    ctx.globalCompositeOperation = "source-over";
 
-    if (flyerFile) {
-      const ext = flyerFile.name.split(".").pop()?.toLowerCase() || "jpg";
-      const safe = slugFileName(title).slice(0, 60) || "event";
-      const filePath = `events/${safe}-${Date.now()}.${ext}`;
+    pointer.vx *= 0.92;
+    pointer.vy *= 0.92;
 
-      const { error: upErr } = await supabase
-        .storage
-        .from(BUCKET)
-        .upload(filePath, flyerFile, { upsert: true, contentType: flyerFile.type });
-
-      if (upErr) throw upErr;
-      flyer_path = filePath;
+    if (isMenuOpen()) {
+      pointer.vx *= 0.80;
+      pointer.vy *= 0.80;
+      pointer.active = false;
+    } else if (Math.abs(pointer.vx) + Math.abs(pointer.vy) < 0.02) {
+      pointer.active = false;
     }
 
-    const payload = {
-      title,
-      venue: venue || null,
-      city: city || null,
-      event_date: date,
-      event_time: time,
-      organizer_contact,
-      notes,
-      flyer_path,
-      tickets,               // <-- JSONB array stored here
-      created_by: session.user.id
-    };
-
-    const { error } = await supabase
-      .from("events")
-      .insert(payload)
-      .select(); // returning row when combined with select() [web:69]
-
-    if (error) throw error;
-
-    showOk("Event saved successfully.");
-    setTimeout(() => window.location.href = "./events.html", 800);
-  } catch (err) {
-    showError(err?.message || "Failed to save event.");
-  } finally {
-    saveBtn.disabled = false;
-    saveBtn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save event`;
+    requestAnimationFrame(draw);
   }
-});
 
-/* Init defaults */
-addTicketRow("Regular", "0");
-addTicketRow("VIP", "0");
+  draw();
+}
