@@ -34,12 +34,10 @@ function closeMenu() {
 exploreBtn?.addEventListener("click", openMenu);
 closeMenuBtn?.addEventListener("click", closeMenu);
 
-// Close when tapping outside inner content
 menuScreen?.addEventListener("click", (e) => {
   if (e.target === menuScreen) closeMenu();
 });
 
-// Close on ESC
 window.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeMenu();
 });
@@ -62,7 +60,6 @@ if (canvas && ctx) {
     canvas.style.width = window.innerWidth + "px";
     canvas.style.height = window.innerHeight + "px";
 
-    // reset particles
     particles = Array.from({ length: 90 }, () => ({
       x: Math.random() * w,
       y: Math.random() * h,
@@ -77,7 +74,6 @@ if (canvas && ctx) {
   resize();
 
   function setPointer(clientX, clientY) {
-    // If menu is open, don't react (clean UX)
     if (isMenuOpen()) return;
 
     const x = clientX * dpr;
@@ -91,7 +87,6 @@ if (canvas && ctx) {
   }
 
   window.addEventListener("mousemove", (e) => setPointer(e.clientX, e.clientY), { passive: true });
-
   window.addEventListener("touchstart", (e) => {
     if (isMenuOpen()) return;
     const t = e.touches[0];
@@ -109,7 +104,6 @@ if (canvas && ctx) {
   function draw() {
     ctx.clearRect(0, 0, w, h);
 
-    // vignette
     const vg = ctx.createRadialGradient(
       w * 0.5, h * 0.5, 0,
       w * 0.5, h * 0.5, Math.max(w, h) * 0.75
@@ -119,24 +113,20 @@ if (canvas && ctx) {
     ctx.fillStyle = vg;
     ctx.fillRect(0, 0, w, h);
 
-    // smoke blobs
     ctx.globalCompositeOperation = "lighter";
 
     const influence = pointer.active ? 1 : 0.25;
     const pushRadius = 220 * dpr;
 
     for (const p of particles) {
-      // drift
       p.x += p.vx;
       p.y += p.vy;
 
-      // wrap
       if (p.x < -p.r) p.x = w + p.r;
       if (p.x > w + p.r) p.x = -p.r;
       if (p.y < -p.r) p.y = h + p.r;
       if (p.y > h + p.r) p.y = -p.r;
 
-      // pointer push
       const dx = p.x - pointer.x;
       const dy = p.y - pointer.y;
       const dist = Math.hypot(dx, dy);
@@ -161,11 +151,9 @@ if (canvas && ctx) {
 
     ctx.globalCompositeOperation = "source-over";
 
-    // decay pointer activity if mouse stops
     pointer.vx *= 0.92;
     pointer.vy *= 0.92;
 
-    // if menu is open, calm it down faster
     if (isMenuOpen()) {
       pointer.vx *= 0.80;
       pointer.vy *= 0.80;
