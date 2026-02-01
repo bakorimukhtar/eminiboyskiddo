@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Emini Boyskido — Official</title>
+  <link rel="stylesheet" href="./styles.css" />
+
+  <!-- Icons -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Signature font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Loading overlay -->
+  <div id="loader" class="loader" aria-label="Loading">
+    <div class="spinner"></div>
+  </div>
+
+  <main class="hero" id="hero">
+    <!-- smoke canvas -->
+    <canvas id="bg" class="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- Artist image layer -->
+    <img class="artist-photo" src="./artist.jpg" alt="Artist photo" />
+
+    <!-- Top-right social icons -->
+    <nav class="social" aria-label="Social links">
+  <a href="https://www.facebook.com/share/188eYMUpLm/?mibextid=wwXIfr" aria-label="Facebook" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/facebook" width="24" height="24" alt="Facebook">
+  </a>
+
+  <a href="https://www.instagram.com/boyskido?igsh=ZXBoeW51bGZyMDNm" aria-label="Instagram" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/instagram" width="24" height="24" alt="Instagram">
+  </a>
+
+  <a href="https://snapchat.com/t/oDG0F883" aria-label="Snapchat" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/snapchat" width="24" height="24" alt="Snapchat">
+  </a>
+
+  <a href="https://www.youtube.com/@boyskido" aria-label="YouTube" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/youtube" width="24" height="24" alt="YouTube">
+  </a>
+
+  <a href="https://music.apple.com/ng/artist/boyskido/1531468666" aria-label="Apple Music" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/applemusic" width="24" height="24" alt="Apple Music">
+  </a>
+
+  <a href="https://open.spotify.com/artist/7xodrwn8b6PBIJMCJwzh5w" aria-label="Spotify" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/spotify" width="24" height="24" alt="Spotify">
+  </a>
+
+  <a href="https://audiomack.com/boyskido" aria-label="Audiomack" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/audiomack" width="24" height="24" alt="Audiomack">
+  </a>
+</nav>
+
+    <!-- Center hero text -->
+    <section class="hero-center">
+      <h1 class="signature">Emini Boyskido</h1>
+      <p class="tagline">Official Website</p>
+    </section>
+
+    <!-- Bottom controls -->
+    <footer class="hero-footer">
+      <small class="copyright">COPYRIGHT © 2026 — OSB</small>
+
+      <button class="cta" id="exploreBtn" type="button">
+        EXPLORE <span class="cta-arrow">↗</span>
+      </button>
+    </footer>
+
+    <!-- MENU SCREEN (hidden until Explore) -->
+    <section class="menu-screen" id="menuScreen" aria-hidden="true">
+      <div class="menu-inner">
+        <div class="menu-signature" aria-hidden="true">Emini Boyskido</div>
+
+        <div class="menu-buttons">
+          <a class="menu-btn" href="Index.html">HOME</a>
+          <a class="menu-btn" href="./about.html">ABOUT</a>
+          <a class="menu-btn" href="tour.html">TOUR</a>
+          <a class="menu-btn" href="music.html">MUSIC</a>
+          <a class="menu-btn" href="videos.html">VIDEOS</a>
+          <a class="menu-btn" href="news.html">NEWS</a>
+          <a class="menu-btn" href="contact.html">CONTACT</a>
+        </div>
+
+        <div class="menu-social" aria-label="Social links">
+          <a href="https://www.instagram.com/boyskido?igsh=ZXBoeW51bGZyMDNm" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/share/188eYMUpLm/?mibextid=wwXIfr" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://snapchat.com/t/oDG0F883" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+          <a href="https://www.youtube.com/@boyskido" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://music.apple.com/ng/artist/boyskido/1531468666" aria-label="Apple Music"><i class="fa-brands fa-apple"></i></a>
+          <a href="https://open.spotify.com/artist/7xodrwn8b6PBIJMCJwzh5w" aria-label="Spotify"><i class="fa-brands fa-spotify"></i></a>
+        </div>
+
+        <button class="menu-close" id="closeMenuBtn" type="button" aria-label="Close menu">
+          ✕
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>

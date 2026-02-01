@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — Boyskido</title>
+
+  <link rel="stylesheet" href="./about.css" />
+
+  <!-- Icons -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Signature font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Loader -->
+  <div id="loader" class="loader" aria-label="Loading">
+    <div class="spinner"></div>
+  </div>
+
+  <main class="page" id="page">
+    <!-- smoke canvas -->
+    <canvas id="bg" class="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- Background slideshow layer -->
+    <div class="bg-slideshow" aria-hidden="true">
+      <div class="bg-slide is-active" id="bgA"></div>
+      <div class="bg-slide" id="bgB"></div>
+      <div class="bg-overlay"></div>
+    </div>
+
+    <!-- Top-left brand -->
+    <a class="brand" href="./index.html" aria-label="Back to homepage">
+      <span class="brand-sig">Emini Boyskido</span>
+    </a>
+
+    <!-- Top-right socials -->
+    <nav class="social" aria-label="Social links">
+  <a href="https://www.facebook.com/share/188eYMUpLm/?mibextid=wwXIfr" aria-label="Facebook" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/facebook" width="24" height="24" alt="Facebook">
+  </a>
+
+  <a href="https://www.instagram.com/boyskido?igsh=ZXBoeW51bGZyMDNm" aria-label="Instagram" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/instagram" width="24" height="24" alt="Instagram">
+  </a>
+
+  <a href="https://snapchat.com/t/oDG0F883" aria-label="Snapchat" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/snapchat" width="24" height="24" alt="Snapchat">
+  </a>
+
+  <a href="https://www.youtube.com/@boyskido" aria-label="YouTube" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/youtube" width="24" height="24" alt="YouTube">
+  </a>
+
+  <a href="https://music.apple.com/ng/artist/boyskido/1531468666" aria-label="Apple Music" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/applemusic" width="24" height="24" alt="Apple Music">
+  </a>
+
+  <a href="https://open.spotify.com/artist/7xodrwn8b6PBIJMCJwzh5w" aria-label="Spotify" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/spotify" width="24" height="24" alt="Spotify">
+  </a>
+
+  <a href="https://audiomack.com/boyskido" aria-label="Audiomack" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/audiomack" width="24" height="24" alt="Audiomack">
+  </a>
+</nav>
+
+
+    <!-- Content overlay (no scrollbars) -->
+    <section class="about" aria-label="About Boyskido">
+      <div class="about-card">
+        <div class="kicker">ABOUT</div>
+        <h1 class="title">BOYSKIDO</h1>
+
+        <p class="lead">
+          Adeyinka Oladunni Dare, known professionally as <strong>Boyskido</strong>, is a fast-rising Northern Nigerian
+          Afrobeat artist and professional photographer born and raised in Sokoto State, though originally from Oyo State.
+        </p>
+
+        <p class="body">
+          Known for his work in the Northern Nigerian music scene, he gained attention with hits like
+          <strong>"Aure"</strong> (feat. Emtee Shmurda) and released the EP
+          <strong><em>The Story of an Ordinary Sokoto Boy</em></strong>.
+        </p>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">ORIGIN</div>
+            <div class="stat-value">Oyo State</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">RAISED</div>
+            <div class="stat-value">Sokoto State</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">STYLE</div>
+            <div class="stat-value">Afrobeat</div>
+          </div>
+        </div>
+
+        <div class="key">
+          <div class="key-title">Key Details</div>
+          <div class="key-grid">
+            <div class="pill"><strong>Background:</strong> Northern perspective to Afrobeat.</div>
+            <div class="pill"><strong>Education:</strong> Computer Science.</div>
+            <div class="pill"><strong>Career:</strong> Professional photographer.</div>
+            <div class="pill"><strong>Style:</strong> Hustle, hope & heart from the North.</div>
+            <div class="pill"><strong>Influence:</strong> Hamisu Breaker.</div>
+            <div class="pill"><strong>Breakthrough:</strong> “Aure” ft. Emtee Shmurda.</div>
+          </div>
+        </div>
+
+        <div class="cta-row">
+          <a class="btn-outline" href="./music.html">GO TO MUSIC</a>
+          <a class="btn-ghost" href="./contact.html">BOOKINGS / CONTACT <span class="arrow">↗</span></a>
+        </div>
+
+        <div class="note">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Background images rotate automatically.</span>
+        </div>
+      </div>
+
+      <!-- slideshow controls -->
+      <div class="bg-controls" aria-label="Background slideshow controls">
+        <button class="nav-btn" id="prevBg" type="button">PREV</button>
+        <div class="dots" id="dots" aria-hidden="false"></div>
+        <button class="nav-btn" id="nextBg" type="button">NEXT</button>
+      </div>
+    </section>
+
+    <!-- Bottom bar -->
+    <footer class="bottom-bar">
+      <div class="bottom-left">
+        <small class="copyright">COPYRIGHT © 2026 — OSB</small>
+      </div>
+
+      <button class="explore-pill" id="exploreBtn" type="button">
+        <span>EXPLORE</span>
+        <span class="pill-arrow" aria-hidden="true">↗</span>
+      </button>
+    </footer>
+
+    <!-- MENU OVERLAY -->
+    <section class="menu-screen" id="menuScreen" aria-hidden="true">
+      <div class="menu-inner">
+        <div class="menu-signature" aria-hidden="true">Boyskido</div>
+
+        <div class="menu-buttons">
+          <a class="menu-btn" href="./index.html">HOME</a>
+          <a class="menu-btn" href="./about.html">ABOUT</a>
+          <a class="menu-btn" href="./tour.html">TOUR</a>
+          <a class="menu-btn" href="./music.html">MUSIC</a>
+          <a class="menu-btn" href="./videos.html">VIDEOS</a>
+          <a class="menu-btn" href="news.html">NEWS</a>
+          <a class="menu-btn" href="./contact.html">CONTACT</a>
+        </div>
+
+        <div class="menu-social" aria-label="Social links">
+          <a href="https://www.instagram.com/boyskido?igsh=ZXBoeW51bGZyMDNm" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/share/188eYMUpLm/?mibextid=wwXIfr" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://snapchat.com/t/oDG0F883" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+          <a href="https://www.youtube.com/@boyskido" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://music.apple.com/ng/artist/boyskido/1531468666" aria-label="Apple Music"><i class="fa-brands fa-apple"></i></a>
+          <a href="https://open.spotify.com/artist/7xodrwn8b6PBIJMCJwzh5w" aria-label="Spotify"><i class="fa-brands fa-spotify"></i></a>
+        </div>
+
+        <button class="menu-close" id="closeMenuBtn" type="button" aria-label="Close menu">✕</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="./about.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Emini Boyskido</title>
+
+  <link rel="stylesheet" href="./contact.css" />
+
+  <!-- Icons -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Signature font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <!-- Loader -->
+  <div id="loader" class="loader" aria-label="Loading">
+    <div class="spinner"></div>
+  </div>
+
+  <main class="page" id="page">
+    <!-- Smoke canvas -->
+    <canvas id="bg" class="bg-canvas" aria-hidden="true"></canvas>
+
+    <!-- Top-left brand -->
+    <a class="brand" href="./index.html" aria-label="Back to homepage">
+      <span class="brand-sig">Emini Boyskido</span>
+    </a>
+
+    <!-- Top-right socials -->
+    <nav class="social" aria-label="Social links">
+  <a href="https://www.facebook.com/share/188eYMUpLm/?mibextid=wwXIfr" aria-label="Facebook" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/facebook" width="24" height="24" alt="Facebook">
+  </a>
+
+  <a href="https://www.instagram.com/boyskido?igsh=ZXBoeW51bGZyMDNm" aria-label="Instagram" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/instagram" width="24" height="24" alt="Instagram">
+  </a>
+
+  <a href="https://snapchat.com/t/oDG0F883" aria-label="Snapchat" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/snapchat" width="24" height="24" alt="Snapchat">
+  </a>
+
+  <a href="https://www.youtube.com/@boyskido" aria-label="YouTube" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/youtube" width="24" height="24" alt="YouTube">
+  </a>
+
+  <a href="https://music.apple.com/ng/artist/boyskido/1531468666" aria-label="Apple Music" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/applemusic" width="24" height="24" alt="Apple Music">
+  </a>
+
+  <a href="https://open.spotify.com/artist/7xodrwn8b6PBIJMCJwzh5w" aria-label="Spotify" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/spotify" width="24" height="24" alt="Spotify">
+  </a>
+
+  <a href="https://audiomack.com/boyskido" aria-label="Audiomack" target="_blank" rel="noopener">
+    <img src="https://cdn.simpleicons.org/audiomack" width="24" height="24" alt="Audiomack">
+  </a>
+</nav>
+
+    <!-- Main layout -->
+    <section class="content" aria-label="Contact / Bookings">
+      <!-- Left text -->
+      <div class="left">
+        <div class="for-text">FOR</div>
+        <div class="bookings-text">BOOKINGS</div>
+
+        <div class="email-block">
+          <div class="email-label">EMAIL:</div>
+          <a class="email-value" href="mailto:bookings@eminiboyskido.com">BOOKINGS@EMINIBOYSKIDO.COM</a>
+        </div>
+      </div>
+
+      <!-- Right form -->
+      <div class="right">
+        <form class="form" id="contactForm" novalidate>
+          <label class="sr-only" for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Name" autocomplete="name" />
+
+          <label class="sr-only" for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Email" autocomplete="email" />
+
+          <label class="sr-only" for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Message" rows="8"></textarea>
+
+          <button class="send" type="submit">Send</button>
+
+          <div class="form-status" id="formStatus" aria-live="polite"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Bottom bar -->
+    <footer class="bottom-bar">
+      <div class="bottom-left">
+        <small class="copyright">COPYRIGHT © 2026 — OSB</small>
+      </div>
+
+      <button class="explore-pill" id="exploreBtn" type="button">
+        <span>EXPLORE</span>
+        <span class="pill-arrow" aria-hidden="true">↗</span>
+      </button>
+    </footer>
+
+    <!-- MENU OVERLAY -->
+    <section class="menu-screen" id="menuScreen" aria-hidden="true">
+      <div class="menu-inner">
+        <div class="menu-signature" aria-hidden="true">Emini Boyskido</div>
+
+        <div class="menu-buttons">
+          <a class="menu-btn" href="./index.html">HOME</a>
+          <a class="menu-btn" href="./about.html">ABOUT</a>
+          <a class="menu-btn" href="./tour.html">TOUR</a>
+          <a class="menu-btn" href="./music.html">MUSIC</a>
+          <a class="menu-btn" href="./videos.html">VIDEOS</a>
+          <a class="menu-btn" href="./news.html">NEWS</a>
+          <a class="menu-btn" href="./contact.html">CONTACT</a>
+        </div>
+
+        <div class="menu-social" aria-label="Social links">
+          <a href="https://www.instagram.com/boyskido?igsh=ZXBoeW51bGZyMDNm" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="https://www.facebook.com/share/188eYMUpLm/?mibextid=wwXIfr" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="https://snapchat.com/t/oDG0F883" aria-label="Snapchat"><i class="fa-brands fa-snapchat"></i></a>
+          <a href="https://www.youtube.com/@boyskido" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="https://music.apple.com/ng/artist/boyskido/1531468666" aria-label="Apple Music"><i class="fa-brands fa-apple"></i></a>
+          <a href="https://open.spotify.com/artist/7xodrwn8b6PBIJMCJwzh5w" aria-label="Spotify"><i class="fa-brands fa-spotify"></i></a>
+        </div>
+
+        <button class="menu-close" id="closeMenuBtn" type="button" aria-label="Close menu">✕</button>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="./contact.js"></script>
+</body>
+</html>
