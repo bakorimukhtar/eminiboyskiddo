@@ -57,14 +57,32 @@
   </a>
 </nav>
 
-    <section class="content" aria-label="Tour">
-      <header class="tour-header">
-        <div class="dont-miss">DON'T MISS</div>
-        <div class="live-title">SKI SKI LIVE</div>
-      </header>
+<section class="content" aria-label="Tour">
+  <header class="tour-header">
+    <div class="dont-miss">DON'T MISS</div>
+    <div class="live-title">SKI SKI LIVE</div>
+  </header>
 
-      <div class="no-events">NO EVENTS AT<br>THIS TIME</div>
-    </section>
+  <!-- Search -->
+  <div class="search-wrap" aria-label="Search events">
+    <div class="search-row">
+      <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+      <input id="searchInput" type="text" placeholder="Search title, venue, city..." autocomplete="off" />
+    </div>
+    <div class="search-hint" id="searchHint">UPCOMING EVENTS + RECENT PAST EVENTS</div>
+  </div>
+
+  <!-- Upcoming -->
+  <div class="section-title">UPCOMING</div>
+  <div id="upcomingWrap" class="events-grid" aria-label="Upcoming events"></div>
+
+  <!-- Past -->
+  <div class="section-title past-title">PAST (RECENT)</div>
+  <div id="pastWrap" class="events-grid" aria-label="Past events"></div>
+
+  <div id="noEvents" class="no-events hidden">NO EVENTS AT<br>THIS TIME</div>
+</section>
+
 
     <footer class="bottom-bar">
       <div class="bottom-left">
@@ -106,6 +124,6 @@
 
   </main>
 
-  <script src="./tour.js"></script>
+  <script type="module" src="./tour.js"></script>
 </body>
 </html>
