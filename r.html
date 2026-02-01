@@ -10,9 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
-  <!-- Your CSS -->
   <style>
-    /* ===== your provided CSS (unchanged) ===== */
     :root{
       --fg: rgba(255,255,255,0.92);
       --muted: rgba(255,255,255,0.65);
@@ -21,68 +19,85 @@
     }
     *{ box-sizing:border-box; }
     html,body{ height:100%; }
+
+    /* ✅ FIX: allow scrolling */
     body{
       margin:0;
       background:var(--bg);
       color:var(--fg);
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      overflow:hidden;
-    }
-    .loader{ position:fixed; inset:0; background:var(--bg); display:grid; place-items:center; z-index:60; transition: opacity .5s ease, visibility .5s ease; }
-    .loader.hidden{ opacity:0; visibility:hidden; }
-    .spinner{ width:56px; height:56px; border-radius:50%; border:3px solid rgba(255,255,255,0.18); border-top-color: rgba(255,255,255,0.9); animation: spin 1s linear infinite; }
-    @keyframes spin{ to { transform: rotate(360deg); } }
-    .hero{ position:relative; height:100%; width:100%; padding:18px; }
-    .bg-canvas{ position:absolute; inset:0; width:100%; height:100%; z-index:0; }
-    .artist-photo{ position:absolute; inset:0; width:100%; height:100%; object-fit: cover; z-index:1; opacity: 0.56; filter: grayscale(1) contrast(1.06) brightness(0.82); transform: scale(1.02); pointer-events:none; }
-    .hero-center{ position:absolute; inset:0; z-index:5; display:grid; place-items:center; text-align:center; padding: 0 18px; }
-    .hero-stack{ width:min(720px, 96vw); display:flex; flex-direction:column; align-items:center; gap: 14px; padding-bottom: 120px; }
-    .signature{ font-family: "Great Vibes", cursive; font-size: clamp(52px, 10vw, 126px); margin:0; text-shadow: 0 20px 60px rgba(0,0,0,0.75); }
-    .tagline{ margin: 0; color:var(--muted); letter-spacing: 0.22em; text-transform: uppercase; font-size: 12px; }
-    .platform-grid{ margin-top: 6px; display:grid; grid-template-columns: repeat(7, 1fr); gap: 12px; align-items:center; justify-items:center; }
-    .picon{ width: 50px; height: 50px; border-radius: 999px; display:grid; place-items:center; background: rgba(0,0,0,0.18); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(10px); transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease; }
-    .picon:hover{ transform: translateY(-3px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.28); box-shadow: 0 14px 30px rgba(0,0,0,0.35); }
-    .picon img{ width: 24px; height: 24px; display:block; opacity: 0.95; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.35)); }
-    .availability{ margin-top: 2px; color: rgba(255,255,255,0.72); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 800; font-size: 10px; }
-    .quick-actions{ margin-top: 4px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-    .qbtn{ text-decoration:none; padding: 12px 16px; border-radius: 14px; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 900; font-size: 12px; transition: transform .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease; }
-    .qbtn-primary{ color: rgba(255,255,255,0.95); border: 1px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.08); backdrop-filter: blur(10px); }
-    .qbtn-primary:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.34); }
-    .qbtn-ghost{ color: rgba(255,255,255,0.82); border: 1px solid rgba(255,255,255,0.16); background: rgba(0,0,0,0.18); backdrop-filter: blur(10px); }
-    .qbtn-ghost:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.26); color: rgba(255,255,255,0.95); }
-    .mini-arrow{ opacity: .9; }
-    .hero-footer{ position:absolute; left:18px; right:18px; bottom:18px; z-index:5; display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    .copyright{ color: rgba(255,255,255,0.55); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
-    .cta{ border: 1px solid var(--border); background: rgba(0,0,0,0.35); color: var(--fg); padding: 12px 16px; border-radius: 12px; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; cursor:pointer; backdrop-filter: blur(10px); display:flex; align-items:center; gap:10px; transition: transform .2s ease, background .2s ease, border-color .2s ease; }
-    .cta:hover{ transform: translateY(-2px); background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.25); }
-    .cta:active{ transform: translateY(0px); }
-    .cta-arrow{ opacity:.8; }
-    .menu-screen{ position:absolute; inset:0; z-index:20; display:grid; place-items:center; background: rgba(0,0,0,0.65); backdrop-filter: blur(10px); opacity:0; visibility:hidden; transform: scale(1.01); transition: opacity .28s ease, visibility .28s ease, transform .28s ease; }
-    .hero.menu-open .menu-screen{ opacity:1; visibility:visible; transform: scale(1); }
-    .hero.menu-open .hero-center, .hero.menu-open .hero-footer{ opacity:0; pointer-events:none; transition: opacity .2s ease; }
-    .menu-inner{ width:min(520px, 92vw); position:relative; padding: 26px 16px; }
-    .menu-signature{ position:absolute; top: -10px; left:0; right:0; text-align:center; font-family:"Great Vibes", cursive; font-size: clamp(70px, 11vw, 140px); opacity:0.12; pointer-events:none; }
-    .menu-buttons{ display:flex; flex-direction:column; gap:12px; margin-top: 40px; }
-    .menu-btn{ text-decoration:none; color:var(--fg); border: 1px solid rgba(255,255,255,0.18); background: rgba(0,0,0,0.22); padding: 14px 18px; border-radius: 14px; text-align:center; letter-spacing: 0.18em; font-weight:800; text-transform: uppercase; }
-    .menu-btn:hover{ background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.28); }
-    .menu-social{ margin-top: 18px; display:flex; justify-content:center; gap:14px; opacity:0.85; }
-    .menu-social a{ color:var(--fg); text-decoration:none; width:34px; height:34px; display:grid; place-items:center; border-radius:999px; border:1px solid rgba(255,255,255,0.12); background: rgba(0,0,0,0.18); }
-    .menu-close{ position:absolute; top: 10px; right: 10px; width:44px; height:44px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.16); background: rgba(0,0,0,0.25); color: var(--fg); cursor:pointer; }
-    @media (max-width: 520px){
-      .hero{ padding:14px; }
-      .hero-stack{ padding-bottom: 138px; gap: 12px; }
-      .platform-grid{ grid-template-columns: repeat(4, 1fr); gap: 12px; }
-      .platform-grid .picon:nth-child(5){ grid-column: 1 / 2; }
-      .platform-grid .picon:nth-child(6){ grid-column: 2 / 3; }
-      .platform-grid .picon:nth-child(7){ grid-column: 3 / 4; }
-      .picon{ width: 54px; height: 54px; }
-      .picon img{ width: 26px; height: 26px; }
-      .availability{ font-size: 10px; letter-spacing: 0.16em; padding: 0 10px; }
-      .hero-footer{ flex-direction:column; align-items:stretch; }
-      .cta{ width:100%; justify-content:space-between; }
+      overflow-x:hidden;
+      overflow-y:auto;
     }
 
-    /* ===== small additions for cover + text ===== */
+    .loader{
+      position:fixed; inset:0;
+      background:var(--bg);
+      display:grid; place-items:center;
+      z-index:60;
+      transition: opacity .5s ease, visibility .5s ease;
+    }
+    .loader.hidden{ opacity:0; visibility:hidden; }
+    .spinner{
+      width:56px; height:56px; border-radius:50%;
+      border:3px solid rgba(255,255,255,0.18);
+      border-top-color: rgba(255,255,255,0.9);
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin{ to { transform: rotate(360deg); } }
+
+    /* ✅ FIX: min-height instead of fixed height so content can grow */
+    .hero{
+      position:relative;
+      min-height:100vh;
+      width:100%;
+      padding:18px;
+    }
+
+    .bg-canvas{ position:fixed; inset:0; width:100vw; height:100vh; z-index:0; pointer-events:none; }
+    .artist-photo{
+      position:fixed; inset:0; width:100vw; height:100vh;
+      object-fit: cover; z-index:1;
+      opacity: 0.56;
+      filter: grayscale(1) contrast(1.06) brightness(0.82);
+      transform: scale(1.02);
+      pointer-events:none;
+    }
+
+    /* ✅ FIX: make center content part of normal flow (not absolute) */
+    .hero-center{
+      position:relative;
+      z-index:5;
+      display:flex;
+      justify-content:center;
+      padding: 18px;
+    }
+
+    /* ✅ Content can now scroll naturally */
+    .hero-stack{
+      width:min(720px, 96vw);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 14px;
+      padding: 18px 0 170px; /* space for footer */
+      text-align:center;
+    }
+
+    .signature{
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(52px, 10vw, 126px);
+      margin:0;
+      text-shadow: 0 20px 60px rgba(0,0,0,0.75);
+    }
+    .tagline{
+      margin: 0;
+      color:var(--muted);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
     .release-title{
       margin: 6px 0 0;
       font-weight: 950;
@@ -99,9 +114,10 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
     }
+
     .cover-chip{
       margin-top: 10px;
-      width: min(180px, 48vw);
+      width: min(180px, 52vw);
       aspect-ratio: 1/1;
       border-radius: 18px;
       overflow:hidden;
@@ -110,6 +126,200 @@
       background: rgba(0,0,0,0.25);
     }
     .cover-chip img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+    /* ✅ FIX: center music stores under cover (flex, not 7-column grid) */
+    .platform-grid{
+      margin-top: 10px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap: 12px;
+      flex-wrap:wrap;
+      width: 100%;
+    }
+
+    .picon{
+      width: 50px; height: 50px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(10px);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .picon:hover{
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.28);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+    }
+    .picon img{
+      width: 24px; height: 24px;
+      display:block;
+      opacity: 1;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.35));
+    }
+
+    .availability{
+      margin-top: 2px;
+      color: rgba(255,255,255,0.72);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 800;
+      font-size: 10px;
+    }
+
+    .quick-actions{
+      margin-top: 4px;
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .qbtn{
+      text-decoration:none;
+      padding: 12px 16px;
+      border-radius: 14px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 900;
+      font-size: 12px;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, opacity .18s ease;
+    }
+    .qbtn-primary{
+      color: rgba(255,255,255,0.95);
+      border: 1px solid rgba(255,255,255,0.25);
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(10px);
+    }
+    .qbtn-primary:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.34);
+    }
+    .qbtn-ghost{
+      color: rgba(255,255,255,0.82);
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+    }
+    .qbtn-ghost:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.26);
+      color: rgba(255,255,255,0.95);
+    }
+    .mini-arrow{ opacity: .9; }
+
+    /* Cards */
+    .cards{
+      margin-top: 14px;
+      width: min(520px, 92vw);
+      display: grid;
+      gap: 12px;
+    }
+    @media (min-width: 720px){
+      .cards{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .card{
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.22);
+      backdrop-filter: blur(10px);
+      padding: 14px 14px;
+      border-radius: 16px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+      text-align: left;
+    }
+    .card-title{
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: rgba(255,255,255,0.92);
+    }
+    .card-sub{
+      margin: 6px 0 10px;
+      color: rgba(255,255,255,0.65);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .social{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .social a{
+      width: 44px; height: 44px;
+      border-radius: 999px;
+      display:grid;
+      place-items:center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .social a:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.28);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.35);
+    }
+    .social img{
+      width: 22px; height: 22px;
+      display:block;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.35));
+    }
+
+    .subscribe{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .subscribe input{
+      flex: 1;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.18);
+      color: rgba(255,255,255,0.92);
+      padding: 0 12px;
+      outline: none;
+      min-width: 0;
+    }
+    .subscribe input::placeholder{ color: rgba(255,255,255,0.45); }
+    .subscribe input:focus{
+      border-color: rgba(255,255,255,0.28);
+      background: rgba(255,255,255,0.06);
+    }
+    .subscribe button{
+      height: 44px;
+      padding: 0 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.95);
+      font-weight: 900;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      cursor:pointer;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      white-space:nowrap;
+    }
+    .subscribe button:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.34);
+    }
+    .tiny-note{
+      margin: 10px 0 0;
+      color: rgba(255,255,255,0.50);
+      font-size: 11px;
+      letter-spacing: 0.02em;
+    }
+
     .error-box{
       margin-top: 14px;
       border: 1px solid rgba(255,255,255,0.14);
@@ -119,6 +329,150 @@
       color: rgba(255,220,220,0.95);
       font-size: 13px;
       max-width: 520px;
+      width: min(520px, 92vw);
+    }
+
+    /* ✅ FIX: footer is fixed but won’t block scroll; content has bottom padding */
+    .hero-footer{
+      position:fixed;
+      left:18px; right:18px; bottom:18px;
+      z-index:6;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      pointer-events:auto;
+    }
+    .copyright{
+      color: rgba(255,255,255,0.55);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.55);
+    }
+    .cta{
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.35);
+      color: var(--fg);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 900;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor:pointer;
+      backdrop-filter: blur(10px);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+    .cta:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.25);
+    }
+    .cta:active{ transform: translateY(0px); }
+    .cta-arrow{ opacity:.8; }
+
+    .menu-screen{
+      position:fixed; inset:0;
+      z-index:20;
+      display:grid;
+      place-items:center;
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(10px);
+      opacity:0;
+      visibility:hidden;
+      transform: scale(1.01);
+      transition: opacity .28s ease, visibility .28s ease, transform .28s ease;
+    }
+    .hero.menu-open .menu-screen{ opacity:1; visibility:visible; transform: scale(1); }
+    .hero.menu-open .hero-center, .hero.menu-open .hero-footer{
+      opacity:0; pointer-events:none; transition: opacity .2s ease;
+    }
+
+    .menu-inner{
+      width:min(520px, 92vw);
+      position:relative;
+      padding: 26px 16px;
+    }
+    .menu-signature{
+      position:absolute;
+      top: -10px; left:0; right:0;
+      text-align:center;
+      font-family:"Great Vibes", cursive;
+      font-size: clamp(70px, 11vw, 140px);
+      opacity:0.12;
+      pointer-events:none;
+    }
+    .menu-buttons{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top: 40px;
+    }
+    .menu-btn{
+      text-decoration:none;
+      color:var(--fg);
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(0,0,0,0.22);
+      padding: 14px 18px;
+      border-radius: 14px;
+      text-align:center;
+      letter-spacing: 0.18em;
+      font-weight:800;
+      text-transform: uppercase;
+    }
+    .menu-btn:hover{
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.28);
+    }
+    .menu-social{
+      margin-top: 18px;
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      opacity:0.85;
+    }
+    .menu-social a{
+      color:var(--fg);
+      text-decoration:none;
+      width:34px;
+      height:34px;
+      display:grid;
+      place-items:center;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.18);
+    }
+    .menu-close{
+      position:absolute;
+      top: 10px; right: 10px;
+      width:44px; height:44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(0,0,0,0.25);
+      color: var(--fg);
+      cursor:pointer;
+    }
+
+    @media (max-width: 520px){
+      .hero{ padding:14px; }
+      .hero-center{ padding: 14px; }
+      .hero-stack{ padding-bottom: 190px; gap: 12px; }
+      .picon{ width: 54px; height: 54px; }
+      .picon img{ width: 26px; height: 26px; }
+      .availability{ font-size: 10px; letter-spacing: 0.16em; padding: 0 10px; }
+
+      .hero-footer{
+        left:14px; right:14px; bottom:14px;
+        flex-direction:column;
+        align-items:stretch;
+      }
+      .cta{ width:100%; justify-content:space-between; }
+      .copyright{ text-align:center; }
+      .subscribe{ flex-direction:column; align-items:stretch; }
+      .subscribe button{ width:100%; }
     }
   </style>
 </head>
@@ -130,7 +484,6 @@
 
   <section id="hero" class="hero">
     <canvas id="bg" class="bg-canvas"></canvas>
-
     <img id="bgPhoto" class="artist-photo" alt="Release cover background" />
 
     <div class="hero-center">
@@ -145,6 +498,7 @@
         <p id="releaseTitle" class="release-title"></p>
         <p id="releaseMeta" class="release-meta"></p>
 
+        <!-- ✅ centered below cover -->
         <div id="platformGrid" class="platform-grid" aria-label="Streaming platforms"></div>
 
         <div class="availability" id="availabilityText">AVAILABLE NOW</div>
@@ -152,6 +506,44 @@
         <div class="quick-actions">
           <a id="shareBtn" class="qbtn qbtn-primary" href="#" role="button">Share <span class="mini-arrow">↗</span></a>
           <a id="copyBtn" class="qbtn qbtn-ghost" href="#" role="button">Copy link</a>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <p class="card-title">Follow Boyskido</p>
+            <p class="card-sub">Official pages — tap to follow</p>
+
+            <nav class="social" aria-label="Social links">
+              <a href="https://www.facebook.com/share/188eYMUpLm/?mibextid=wwXIfr" aria-label="Facebook" target="_blank" rel="noopener">
+                <img src="https://cdn.simpleicons.org/facebook" width="24" height="24" alt="Facebook">
+              </a>
+
+              <a href="https://www.instagram.com/boyskido?igsh=ZXBoeW51bGZyMDNm" aria-label="Instagram" target="_blank" rel="noopener">
+                <img src="https://cdn.simpleicons.org/instagram" width="24" height="24" alt="Instagram">
+              </a>
+
+              <a href="https://snapchat.com/t/oDG0F883" aria-label="Snapchat" target="_blank" rel="noopener">
+                <img src="https://cdn.simpleicons.org/snapchat" width="24" height="24" alt="Snapchat">
+              </a>
+
+              <a href="https://www.youtube.com/@boyskido" aria-label="YouTube" target="_blank" rel="noopener">
+                <img src="https://cdn.simpleicons.org/youtube" width="24" height="24" alt="YouTube">
+              </a>
+            </nav>
+          </div>
+
+          <div class="card">
+            <p class="card-title">Subscribe for updates</p>
+            <p class="card-sub">Get notified when new music drops</p>
+
+            <!-- ✅ IDs added so your JS can hook into it -->
+            <form id="subscribeForm" class="subscribe" action="#" method="post" onsubmit="return false;">
+              <input id="subscribeEmail" type="email" placeholder="Email address" required />
+              <button id="subscribeBtn" type="submit">Subscribe</button>
+            </form>
+
+            <p class="tiny-note">No spam. Unsubscribe anytime.</p>
+          </div>
         </div>
 
         <div id="errorBox" class="error-box" style="display:none;"></div>

@@ -418,3 +418,23 @@ body{
 .event-btn.secondary{
   background: rgba(0,0,0,0.18);
 }
+.event-sub { margin-top: 10px; font-size: 12px; opacity: .9; }
+.event-tickets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.ticket-pill {
+  display: inline-flex; align-items: baseline; gap: 8px;
+  padding: 7px 10px; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  font-size: 11px;
+}
+.ticket-pill em { font-style: normal; opacity: .8; }
+.event-notes {
+  margin-top: 10px;
+  font-size: 12px;
+  line-height: 1.45;
+  opacity: .78;
+  border-left: 2px solid rgba(255,255,255,.18);
+  padding-left: 10px;
+}
+.event-btn[disabled] { opacity: .45; cursor: not-allowed; }
+.muted { opacity: .7; }
