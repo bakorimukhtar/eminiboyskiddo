@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Boyskido Admin — Add Event</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome 6.5.0 -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /> <!-- [web:49] -->
+
+  <!-- Brand font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    .signature { font-family: "Great Vibes", cursive; }
+  </style>
+</head>
+
+<body class="bg-[#07070b] text-white min-h-screen">
+  <!-- Background glow -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.10),transparent_55%)]"></div>
+    <div class="absolute inset-0 opacity-30"
+      style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.15), rgba(0,0,0,0.85));"></div>
+  </div>
+
+  <div class="mx-auto max-w-5xl px-4 py-4 flex items-center justify-between gap-3">
+  <div>
+    <div class="signature text-4xl leading-none">Boyskido</div>
+    <div class="mt-1 text-[11px] tracking-[0.22em] uppercase text-white/60">Create Event</div>
+  </div>
+
+  <div class="flex items-center gap-3">
+    <div class="hidden sm:block text-right">
+      <div id="userEmail" class="text-xs text-white/80"></div>
+      <div class="text-[11px] text-white/55">Signed in</div>
+    </div>
+    <div class="h-10 w-10 rounded-xl border border-white/10 bg-white/5 grid place-items-center">
+      <i class="fa-regular fa-user text-white/80"></i>
+    </div>
+
+    <a href="./events.html"
+       class="inline-flex items-center gap-3 rounded-xl border border-white/15 bg-white/10 hover:bg-white/15
+              px-4 py-3 text-xs font-black tracking-[0.18em] uppercase">
+      <i class="fa-solid fa-arrow-left"></i>
+      Return to events
+    </a>
+  </div>
+</div>
+
+
+  <main class="relative mx-auto max-w-5xl px-4 py-6">
+    <section class="rounded-2xl border border-white/10 bg-black/25 backdrop-blur-xl p-5 sm:p-6">
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <h1 class="text-sm font-extrabold tracking-[0.18em] uppercase text-white/90">Add event</h1>
+          <p class="mt-1 text-[12px] text-white/60">
+            Create a new event, upload a flyer, and add one or more ticket options.
+          </p>
+        </div>
+
+        <div class="hidden sm:flex items-center gap-2 text-white/60">
+          <span class="h-10 w-10 rounded-xl border border-white/10 bg-white/5 grid place-items-center">
+            <i class="fa-regular fa-calendar-days"></i>
+          </span>
+        </div>
+      </div>
+
+      <form id="eventForm" class="mt-6 grid grid-cols-1 gap-4">
+        <!-- Event title -->
+        <div>
+          <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70" for="title">Event title</label>
+          <div class="mt-2 relative">
+            <span class="absolute inset-y-0 left-3 grid place-items-center text-white/45">
+              <i class="fa-solid fa-heading"></i>
+            </span>
+            <input id="title" required
+              class="w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30"
+              placeholder="Live at Club X — Lagos" />
+          </div>
+        </div>
+
+        <!-- Venue + City -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70" for="venue">Venue</label>
+            <div class="mt-2 relative">
+              <span class="absolute inset-y-0 left-3 grid place-items-center text-white/45">
+                <i class="fa-solid fa-location-dot"></i>
+              </span>
+              <input id="venue"
+                class="w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30"
+                placeholder="Club / Arena name" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70" for="city">City</label>
+            <div class="mt-2 relative">
+              <span class="absolute inset-y-0 left-3 grid place-items-center text-white/45">
+                <i class="fa-solid fa-city"></i>
+              </span>
+              <input id="city"
+                class="w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30"
+                placeholder="Lagos" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Date + Time -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70" for="date">Event date</label>
+            <div class="mt-2 relative">
+              <span class="absolute inset-y-0 left-3 grid place-items-center text-white/45">
+                <i class="fa-regular fa-calendar"></i>
+              </span>
+              <input id="date" type="date" required
+                class="w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70" for="time">Start time</label>
+            <div class="mt-2 relative">
+              <span class="absolute inset-y-0 left-3 grid place-items-center text-white/45">
+                <i class="fa-regular fa-clock"></i>
+              </span>
+              <input id="time" type="time"
+                class="w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30" />
+            </div>
+            <p class="mt-2 text-[11px] text-white/50">Optional (leave blank if unknown).</p>
+          </div>
+        </div>
+
+        <!-- Tickets builder -->
+        <div class="rounded-2xl border border-white/10 bg-black/20 p-4 sm:p-5">
+          <div class="flex items-center justify-between gap-3">
+            <div>
+              <div class="text-[11px] tracking-[0.18em] uppercase text-white/60">Tickets</div>
+              <div class="mt-1 text-sm font-extrabold text-white/85">Add one or more ticket options</div>
+              <div class="mt-1 text-[11px] text-white/55">Example: Regular (₦5,000), VIP (₦20,000).</div>
+            </div>
+
+            <button type="button" id="addTicketBtn"
+              class="rounded-xl border border-white/15 bg-white/10 hover:bg-white/15 px-4 py-3 text-xs font-black tracking-[0.18em] uppercase inline-flex items-center gap-3">
+              <i class="fa-solid fa-plus"></i>
+              Add ticket
+            </button>
+          </div>
+
+          <div id="ticketsWrap" class="mt-4 space-y-3"></div>
+
+          <p class="mt-3 text-[11px] text-white/50">
+            If the event is free, add a ticket called “Free” with price 0.
+          </p>
+        </div>
+
+        <!-- Organizer contact -->
+        <div>
+          <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70" for="organizer_contact">
+            Organizer contact link (WhatsApp / Instagram / phone / website)
+          </label>
+          <div class="mt-2 relative">
+            <span class="absolute inset-y-0 left-3 grid place-items-center text-white/45">
+              <i class="fa-solid fa-link"></i>
+            </span>
+            <input id="organizer_contact" type="url"
+              class="w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30"
+              placeholder="https://wa.me/234xxxxxxxxxx" />
+          </div>
+        </div>
+
+        <!-- Flyer upload -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-start">
+          <div class="md:col-span-3">
+            <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70" for="flyer">Event flyer (image)</label>
+
+            <div class="mt-2 rounded-2xl border border-dashed border-white/15 bg-white/5 p-4">
+              <div class="flex items-start gap-3">
+                <span class="h-10 w-10 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                  <i class="fa-regular fa-image"></i>
+                </span>
+                <div class="flex-1">
+                  <div class="text-sm font-extrabold">Upload flyer</div>
+                  <div class="mt-1 text-[11px] text-white/60">PNG/JPG recommended.</div>
+                </div>
+              </div>
+
+              <input id="flyer" type="file" accept="image/*"
+                class="mt-4 block w-full text-sm text-white/70
+                       file:mr-4 file:rounded-xl file:border file:border-white/15 file:bg-white/10
+                       file:px-4 file:py-2 file:text-xs file:font-black file:tracking-[0.18em] file:uppercase
+                       hover:file:bg-white/15" />
+            </div>
+          </div>
+
+          <div class="md:col-span-2">
+            <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70">Preview</label>
+            <div class="mt-2 rounded-2xl border border-white/10 bg-black/25 overflow-hidden">
+              <div class="aspect-[4/5] bg-black/40 grid place-items-center">
+                <img id="flyerPreview" alt="Flyer preview" class="hidden w-full h-full object-cover" />
+                <div id="flyerPlaceholder" class="text-center px-4 text-white/55">
+                  <i class="fa-regular fa-image text-2xl"></i>
+                  <div class="mt-2 text-[11px] tracking-[0.14em] uppercase">No flyer</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div>
+          <label class="block text-[11px] uppercase tracking-[0.14em] text-white/70" for="notes">Notes (optional)</label>
+          <textarea id="notes" rows="4"
+            class="mt-2 w-full rounded-xl border border-white/15 bg-black/30 px-4 py-3 outline-none focus:border-white/30"
+            placeholder="Any extra details: dress code, special guest, gate opens time, etc."></textarea>
+        </div>
+
+        <!-- Actions -->
+        <div class="pt-2 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+          <div class="text-[11px] text-white/55">
+            <i class="fa-solid fa-circle-info"></i>
+            After saving, this event will appear on the Events page.
+          </div>
+
+          <div class="flex gap-3">
+            <button type="button" id="resetBtn"
+              class="rounded-xl border border-white/15 bg-black/20 hover:bg-white/10 px-4 py-3 text-xs font-black tracking-[0.18em] uppercase inline-flex items-center gap-3">
+              <i class="fa-solid fa-rotate-left"></i>
+              Reset
+            </button>
+
+            <button type="submit" id="saveBtn"
+              class="rounded-xl border border-white/20 bg-white/10 hover:bg-white/15 px-5 py-3 text-xs font-black tracking-[0.18em] uppercase inline-flex items-center gap-3">
+              <i class="fa-solid fa-floppy-disk"></i>
+              Save event
+            </button>
+          </div>
+        </div>
+
+        <p id="msg" class="mt-2 text-sm text-red-200/90 hidden"></p>
+        <p id="ok" class="mt-2 text-sm text-emerald-200/90 hidden"></p>
+      </form>
+    </section>
+
+    <footer class="relative mt-6 text-[11px] tracking-[0.14em] uppercase text-white/40">
+      Copyright © 2026 — OSB
+    </footer>
+  </main>
+
+  <script type="module" src="js/add_events.js"></script>
+</body>
+</html>

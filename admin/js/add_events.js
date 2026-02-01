@@ -2,11 +2,11 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL = "https://huquhmswcygwtuxmwfhg.supabase.co";
 const SUPABASE_KEY = "sb_publishable_iTAzRpmW5gNYvbETn4IXdg_kJ0mZgju";
-
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const BUCKET = "event_flyers";
 
+// --- Elements
 const form = document.getElementById("eventForm");
 const resetBtn = document.getElementById("resetBtn");
 const saveBtn = document.getElementById("saveBtn");
@@ -20,6 +20,9 @@ const flyerPlaceholder = document.getElementById("flyerPlaceholder");
 const ticketsWrap = document.getElementById("ticketsWrap");
 const addTicketBtn = document.getElementById("addTicketBtn");
 
+const userEmailEl = document.getElementById("userEmail");
+
+// --- Helpers
 function showError(text) {
   msg.textContent = text;
   msg.classList.remove("hidden");
@@ -35,20 +38,25 @@ function clearMessages() {
   ok.classList.add("hidden");
 }
 
-async function requireAuth() {
-  const { data: { session }, error } = await supabase.auth.getSession();
+async function requireAuthAndShowUser() {
+  // getUser() performs a network request and returns an authenticated user object. [web:109]
+  const { data: { user }, error } = await supabase.auth.getUser(); // [web:109]
   if (error) throw error;
-  if (!session) {
+
+  if (!user) {
     window.location.href = "./login.html";
     return null;
   }
-  return session;
+
+  if (userEmailEl) userEmailEl.textContent = user.email ?? "";
+  return user;
 }
 
 function slugFileName(name = "flyer") {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+// --- Ticket UI
 function ticketRowTemplate() {
   return `
     <div class="ticketRow rounded-2xl border border-white/10 bg-white/5 p-4">
@@ -63,7 +71,6 @@ function ticketRowTemplate() {
               type="text"
               class="ticketName w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30"
               placeholder="Regular / VIP / Table / Backstage..."
-              required
             />
           </div>
         </div>
@@ -80,7 +87,6 @@ function ticketRowTemplate() {
               step="0.01"
               class="ticketPrice w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-12 py-3 outline-none focus:border-white/30"
               placeholder="0"
-              required
             />
             <button type="button"
               class="removeTicketBtn absolute inset-y-0 right-2 my-2 px-3 rounded-xl border border-white/10 bg-black/20 hover:bg-red-500/10 text-white/70"
@@ -95,6 +101,8 @@ function ticketRowTemplate() {
 }
 
 function addTicketRow(defaultName = "", defaultPrice = "") {
+  if (!ticketsWrap) throw new Error("ticketsWrap not found. Check the element id in HTML.");
+
   ticketsWrap.insertAdjacentHTML("beforeend", ticketRowTemplate());
   const row = ticketsWrap.lastElementChild;
 
@@ -105,27 +113,33 @@ function addTicketRow(defaultName = "", defaultPrice = "") {
   nameEl.value = defaultName;
   priceEl.value = defaultPrice;
 
-  removeBtn.addEventListener("click", () => {
-    row.remove();
-  });
+  removeBtn.addEventListener("click", () => row.remove());
 }
 
 function getTicketsFromUI() {
   const rows = [...ticketsWrap.querySelectorAll(".ticketRow")];
+
   const tickets = rows.map(r => {
-    const name = r.querySelector(".ticketName")?.value?.trim();
+    const name = (r.querySelector(".ticketName")?.value || "").trim();
     const priceStr = r.querySelector(".ticketPrice")?.value;
     const price = priceStr === "" ? null : Number(priceStr);
+
     return { name, price };
   });
 
-  // Validate
-  const clean = tickets.filter(t => t.name && t.price !== null && !Number.isNaN(t.price));
-  return clean;
+  // Validation: require name + numeric price (allow 0)
+  const cleaned = tickets.filter(t =>
+    t.name &&
+    t.price !== null &&
+    !Number.isNaN(t.price) &&
+    t.price >= 0
+  );
+
+  return cleaned;
 }
 
-/* Flyer preview */
-flyerInput.addEventListener("change", () => {
+// --- Flyer preview
+flyerInput?.addEventListener("change", () => {
   clearMessages();
   const file = flyerInput.files?.[0];
   if (!file) {
@@ -134,20 +148,21 @@ flyerInput.addEventListener("change", () => {
     flyerPreview.src = "";
     return;
   }
+
   const url = URL.createObjectURL(file);
   flyerPreview.src = url;
   flyerPreview.classList.remove("hidden");
   flyerPlaceholder.classList.add("hidden");
 });
 
-/* Tickets */
-addTicketBtn.addEventListener("click", () => {
+// --- Buttons
+addTicketBtn?.addEventListener("click", (e) => {
+  e.preventDefault(); // extra safety inside form
   clearMessages();
-  addTicketRow();
+  addTicketRow("", "0");
 });
 
-/* Reset */
-resetBtn.addEventListener("click", () => {
+resetBtn?.addEventListener("click", () => {
   form.reset();
   clearMessages();
 
@@ -159,8 +174,8 @@ resetBtn.addEventListener("click", () => {
   addTicketRow("Regular", "0");
 });
 
-/* Submit */
-form.addEventListener("submit", async (e) => {
+// --- Submit
+form?.addEventListener("submit", async (e) => {
   e.preventDefault();
   clearMessages();
 
@@ -168,8 +183,8 @@ form.addEventListener("submit", async (e) => {
   saveBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Saving...`;
 
   try {
-    const session = await requireAuth();
-    if (!session) return;
+    const user = await requireAuthAndShowUser();
+    if (!user) return;
 
     const title = document.getElementById("title").value.trim();
     const venue = document.getElementById("venue").value.trim();
@@ -184,7 +199,7 @@ form.addEventListener("submit", async (e) => {
 
     const tickets = getTicketsFromUI();
     if (tickets.length === 0) {
-      throw new Error("Add at least one ticket (name and price). If free, use price 0.");
+      throw new Error("Add at least one ticket with a name and price (0 for free).");
     }
 
     // Upload flyer (optional)
@@ -196,10 +211,11 @@ form.addEventListener("submit", async (e) => {
       const safe = slugFileName(title).slice(0, 60) || "event";
       const filePath = `events/${safe}-${Date.now()}.${ext}`;
 
+      // Upload API [web:64]
       const { error: upErr } = await supabase
         .storage
         .from(BUCKET)
-        .upload(filePath, flyerFile, { upsert: true, contentType: flyerFile.type });
+        .upload(filePath, flyerFile, { upsert: true, contentType: flyerFile.type }); // [web:64]
 
       if (upErr) throw upErr;
       flyer_path = filePath;
@@ -214,14 +230,14 @@ form.addEventListener("submit", async (e) => {
       organizer_contact,
       notes,
       flyer_path,
-      tickets,               // <-- JSONB array stored here
-      created_by: session.user.id
+      tickets,              // JSONB array
+      created_by: user.id
     };
 
     const { error } = await supabase
       .from("events")
       .insert(payload)
-      .select(); // returning row when combined with select() [web:69]
+      .select(); // return inserted row when chained [web:69]
 
     if (error) throw error;
 
@@ -235,6 +251,14 @@ form.addEventListener("submit", async (e) => {
   }
 });
 
-/* Init defaults */
-addTicketRow("Regular", "0");
-addTicketRow("VIP", "0");
+// --- Init
+(async function init() {
+  try {
+    await requireAuthAndShowUser();
+    // Ensure there is at least one ticket row visible on load
+    if (ticketsWrap && ticketsWrap.children.length === 0) addTicketRow("Regular", "0");
+  } catch (e) {
+    // If auth fails, requireAuthAndShowUser redirects; otherwise show error.
+    if (e?.message) showError(e.message);
+  }
+})();

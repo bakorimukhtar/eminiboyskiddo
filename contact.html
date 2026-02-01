@@ -79,19 +79,29 @@
       <!-- Right form -->
       <div class="right">
         <form class="form" id="contactForm" novalidate>
-          <label class="sr-only" for="name">Name</label>
-          <input id="name" name="name" type="text" placeholder="Name" autocomplete="name" />
+  <label class="sr-only" for="name">Name</label>
+  <input id="name" name="name" type="text" placeholder="Name" autocomplete="name" />
 
-          <label class="sr-only" for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="Email" autocomplete="email" />
+  <label class="sr-only" for="email">Email</label>
+  <input id="email" name="email" type="email" placeholder="Email" autocomplete="email" />
 
-          <label class="sr-only" for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Message" rows="8"></textarea>
+  <label class="sr-only" for="phone">Phone</label>
+  <input id="phone" name="phone" type="tel" placeholder="Phone (WhatsApp preferred)" autocomplete="tel" />
 
-          <button class="send" type="submit">Send</button>
+  <label class="sr-only" for="preferred_contact">Preferred contact</label>
+  <select id="preferred_contact" name="preferred_contact">
+    <option value="email">Reach me via Email</option>
+    <option value="phone">Reach me via Phone / WhatsApp</option>
+  </select>
 
-          <div class="form-status" id="formStatus" aria-live="polite"></div>
-        </form>
+  <label class="sr-only" for="message">Message</label>
+  <textarea id="message" name="message" placeholder="Message" rows="8"></textarea>
+
+  <button class="send" type="submit">Send</button>
+
+  <div class="form-status" id="formStatus" aria-live="polite"></div>
+</form>
+
       </div>
     </section>
 
@@ -137,6 +147,6 @@
 
   </main>
 
-  <script src="./contact.js"></script>
+  <script type="module" src="./contact.js"></script>
 </body>
 </html>

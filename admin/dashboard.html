@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Boyskido Admin — Dashboard</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome 6.5.0 (real icons) -->
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /> <!-- [web:49] -->
+
+  <!-- Font for branding -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    .signature { font-family: "Great Vibes", cursive; }
+  </style>
+</head>
+
+<body class="bg-[#07070b] text-white min-h-screen">
+  <!-- Mobile overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+  <div class="min-h-screen lg:flex">
+    <!-- Sidebar -->
+    <aside
+      id="sidebar"
+      class="fixed lg:static inset-y-0 left-0 z-50 w-[280px] lg:w-[300px]
+             -translate-x-full lg:translate-x-0 transition-transform duration-200
+             border-r border-white/10 bg-black/35 backdrop-blur-xl"
+      aria-label="Sidebar navigation"
+    >
+      <div class="h-full flex flex-col">
+        <!-- Brand -->
+        <div class="px-5 pt-6 pb-4 border-b border-white/10">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="signature text-4xl leading-none">Boyskido</div>
+              <div class="mt-1 text-[11px] tracking-[0.22em] uppercase text-white/60">Admin Dashboard</div>
+            </div>
+
+            <button
+              id="closeSidebarBtn"
+              class="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10"
+              type="button"
+              aria-label="Close sidebar"
+            >
+              <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Nav -->
+        <nav class="px-3 py-4 flex-1 overflow-auto">
+          <a href="./dashboard.html"
+             class="navlink flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10"
+             data-route="dashboard">
+            <span class="w-6 grid place-items-center text-white/85">
+              <i class="fa-solid fa-chart-simple"></i>
+            </span>
+            <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Overview</span>
+          </a>
+
+          <div class="mt-3 space-y-2">
+            <a href="./events.html"
+               class="navlink flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10"
+               data-route="events">
+              <span class="w-6 grid place-items-center text-white/80">
+                <i class="fa-regular fa-calendar-days"></i>
+              </span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Events</span>
+            </a>
+
+            <a href="./releases.html"
+               class="navlink flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10"
+               data-route="releases">
+              <span class="w-6 grid place-items-center text-white/80">
+                <i class="fa-solid fa-compact-disc"></i>
+              </span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Releases</span>
+            </a>
+
+            <a href="./bookings.html"
+               class="navlink flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10"
+               data-route="bookings">
+              <span class="w-6 grid place-items-center text-white/80">
+                <i class="fa-regular fa-envelope"></i>
+              </span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Bookings</span>
+            </a>
+
+            <a href="./subscribers.html"
+               class="navlink flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10"
+               data-route="subscribers">
+              <span class="w-6 grid place-items-center text-white/80">
+                <i class="fa-solid fa-user-group"></i>
+              </span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Subscribers</span>
+            </a>
+
+            <a href="./settings.html"
+               class="navlink flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10"
+               data-route="settings">
+              <span class="w-6 grid place-items-center text-white/80">
+                <i class="fa-solid fa-gear"></i>
+              </span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Settings</span>
+            </a>
+          </div>
+        </nav>
+
+        <!-- Footer -->
+        <div class="p-4 border-t border-white/10">
+          <button
+            id="logoutBtn"
+            class="w-full rounded-xl border border-white/15 bg-white/10 hover:bg-white/15
+                   px-4 py-3 text-xs font-black tracking-[0.18em] uppercase
+                   inline-flex items-center justify-center gap-3"
+            type="button"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+          </button>
+
+          <p class="mt-3 text-[11px] text-white/55 leading-relaxed">
+            Tip: Keep this admin URL private. Use RLS for all tables.
+          </p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <div class="lg:flex-1 lg:ml-0">
+      <!-- Topbar -->
+      <header class="sticky top-0 z-30 border-b border-white/10 bg-black/30 backdrop-blur-xl">
+        <div class="px-4 lg:px-8 h-16 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <button
+              id="openSidebarBtn"
+              class="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10"
+              type="button"
+              aria-label="Open sidebar"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div>
+              <div class="text-sm font-extrabold tracking-[0.16em] uppercase">Overview</div>
+              <div class="text-[11px] text-white/55">Manage events, releases, bookings, and subscribers.</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="hidden sm:block text-right">
+              <div id="userEmail" class="text-xs text-white/80"></div>
+              <div class="text-[11px] text-white/55">Signed in</div>
+            </div>
+
+            <div class="h-10 w-10 rounded-xl border border-white/10 bg-white/5 grid place-items-center">
+              <i class="fa-regular fa-user text-white/80"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="px-4 lg:px-8 py-6">
+        <!-- Stat cards -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-[11px] tracking-[0.18em] uppercase text-white/60">Upcoming events</div>
+              <span class="w-9 h-9 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                <i class="fa-regular fa-calendar-days"></i>
+              </span>
+            </div>
+            <div id="statEvents" class="mt-2 text-3xl font-extrabold">—</div>
+            <div class="mt-2 text-[11px] text-white/55">From Events table</div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-[11px] tracking-[0.18em] uppercase text-white/60">Releases</div>
+              <span class="w-9 h-9 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                <i class="fa-solid fa-compact-disc"></i>
+              </span>
+            </div>
+            <div id="statReleases" class="mt-2 text-3xl font-extrabold">—</div>
+            <div class="mt-2 text-[11px] text-white/55">Singles / EPs / Albums</div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-[11px] tracking-[0.18em] uppercase text-white/60">New bookings</div>
+              <span class="w-9 h-9 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                <i class="fa-regular fa-envelope"></i>
+              </span>
+            </div>
+            <div id="statBookings" class="mt-2 text-3xl font-extrabold">—</div>
+            <div class="mt-2 text-[11px] text-white/55">Contact form submissions</div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-5">
+            <div class="flex items-center justify-between gap-3">
+              <div class="text-[11px] tracking-[0.18em] uppercase text-white/60">Subscribers</div>
+              <span class="w-9 h-9 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                <i class="fa-solid fa-user-group"></i>
+              </span>
+            </div>
+            <div id="statSubscribers" class="mt-2 text-3xl font-extrabold">—</div>
+            <div class="mt-2 text-[11px] text-white/55">Newsletter fans</div>
+          </div>
+        </section>
+
+        <!-- Quick actions + Session -->
+        <section class="mt-6 grid grid-cols-1 xl:grid-cols-3 gap-4">
+          <div class="xl:col-span-2 rounded-2xl border border-white/10 bg-black/20 p-5">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-xs font-black tracking-[0.18em] uppercase text-white/85">Quick actions</h3>
+              <span class="text-[11px] text-white/55">Shortcuts</span>
+            </div>
+
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <a href="./events.html" class="rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 p-4">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <div class="text-sm font-extrabold">Add event</div>
+                    <div class="mt-1 text-[11px] text-white/60">Create a new show / appearance.</div>
+                  </div>
+                  <span class="w-9 h-9 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                    <i class="fa-solid fa-plus"></i>
+                  </span>
+                </div>
+              </a>
+
+              <a href="./releases.html" class="rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 p-4">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <div class="text-sm font-extrabold">Add release</div>
+                    <div class="mt-1 text-[11px] text-white/60">Publish a single, EP, or album.</div>
+                  </div>
+                  <span class="w-9 h-9 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                    <i class="fa-solid fa-upload"></i>
+                  </span>
+                </div>
+              </a>
+
+              <a href="./bookings.html" class="rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 p-4">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <div class="text-sm font-extrabold">View bookings</div>
+                    <div class="mt-1 text-[11px] text-white/60">See contact form leads.</div>
+                  </div>
+                  <span class="w-9 h-9 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                    <i class="fa-solid fa-inbox"></i>
+                  </span>
+                </div>
+              </a>
+
+              <a href="./subscribers.html" class="rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 p-4">
+                <div class="flex items-start justify-between gap-3">
+                  <div>
+                    <div class="text-sm font-extrabold">View subscribers</div>
+                    <div class="mt-1 text-[11px] text-white/60">Export fans list.</div>
+                  </div>
+                  <span class="w-9 h-9 rounded-xl border border-white/10 bg-black/20 grid place-items-center text-white/75">
+                    <i class="fa-solid fa-users"></i>
+                  </span>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-black/20 p-5">
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-xs font-black tracking-[0.18em] uppercase text-white/85">Session</h3>
+              <span id="sessionStatus" class="text-[11px] text-white/55">Checking…</span>
+            </div>
+
+            <div class="mt-4 space-y-3 text-[12px] text-white/70">
+              <div class="rounded-xl border border-white/10 bg-white/5 p-3">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="text-[11px] tracking-[0.14em] uppercase text-white/60">User</div>
+                  <i class="fa-regular fa-id-badge text-white/50"></i>
+                </div>
+                <div id="userId" class="mt-1 break-all text-white/80">—</div>
+              </div>
+
+              <div class="rounded-xl border border-white/10 bg-white/5 p-3">
+                <div class="flex items-center justify-between gap-3">
+                  <div class="text-[11px] tracking-[0.14em] uppercase text-white/60">Role</div>
+                  <i class="fa-solid fa-shield-halved text-white/50"></i>
+                </div>
+                <div id="userRole" class="mt-1 text-white/80">—</div>
+              </div>
+            </div>
+
+            <p id="dashMsg" class="mt-4 text-sm text-red-200/90 hidden"></p>
+          </div>
+        </section>
+
+        <footer class="mt-8 text-[11px] tracking-[0.14em] uppercase text-white/40">
+          Copyright © 2026 — OSB
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <!-- Page script -->
+  <script type="module" src="./js/dashboard.js"></script>
+</body>
+</html>

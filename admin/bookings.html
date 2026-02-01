@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Boyskido Admin — Bookings</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    .signature { font-family: "Great Vibes", cursive; }
+  </style>
+</head>
+
+<body class="bg-[#07070b] text-white min-h-screen">
+  <div id="overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 hidden lg:hidden"></div>
+
+  <div class="min-h-screen lg:flex">
+    <!-- Sidebar -->
+    <aside id="sidebar"
+      class="fixed lg:static inset-y-0 left-0 z-50 w-[280px] lg:w-[300px]
+             -translate-x-full lg:translate-x-0 transition-transform duration-200
+             border-r border-white/10 bg-black/35 backdrop-blur-xl">
+      <div class="h-full flex flex-col">
+        <div class="px-5 pt-6 pb-4 border-b border-white/10">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="signature text-4xl leading-none">Boyskido</div>
+              <div class="mt-1 text-[11px] tracking-[0.22em] uppercase text-white/60">Admin Dashboard</div>
+            </div>
+            <button id="closeSidebarBtn"
+              class="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10"
+              type="button" aria-label="Close sidebar">
+              <i class="fa-solid fa-xmark text-base"></i>
+            </button>
+          </div>
+        </div>
+
+        <nav class="px-3 py-4 flex-1 overflow-auto">
+          <a href="./dashboard.html"
+             class="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10">
+            <span class="w-6 grid place-items-center text-white/80"><i class="fa-solid fa-chart-simple"></i></span>
+            <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Overview</span>
+          </a>
+
+          <div class="mt-3 space-y-2">
+            <a href="./events.html" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10">
+              <span class="w-6 grid place-items-center text-white/80"><i class="fa-regular fa-calendar-days"></i></span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Events</span>
+            </a>
+
+            <a href="./releases.html" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10">
+              <span class="w-6 grid place-items-center text-white/80"><i class="fa-solid fa-compact-disc"></i></span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Releases</span>
+            </a>
+
+            <a href="./bookings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10" aria-current="page">
+              <span class="w-6 grid place-items-center text-white/85"><i class="fa-regular fa-envelope"></i></span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Bookings</span>
+            </a>
+
+            <a href="./subscribers.html" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10">
+              <span class="w-6 grid place-items-center text-white/80"><i class="fa-solid fa-user-group"></i></span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Subscribers</span>
+            </a>
+
+            <a href="./settings.html" class="flex items-center gap-3 px-4 py-3 rounded-xl border border-white/10 bg-black/10 hover:bg-white/10">
+              <span class="w-6 grid place-items-center text-white/80"><i class="fa-solid fa-gear"></i></span>
+              <span class="text-xs font-extrabold tracking-[0.16em] uppercase">Settings</span>
+            </a>
+          </div>
+        </nav>
+
+        <div class="p-4 border-t border-white/10">
+          <button id="logoutBtn"
+            class="w-full rounded-xl border border-white/15 bg-white/10 hover:bg-white/15
+                   px-4 py-3 text-xs font-black tracking-[0.18em] uppercase inline-flex items-center justify-center gap-3">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            Logout
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="lg:flex-1">
+      <header class="sticky top-0 z-30 border-b border-white/10 bg-black/30 backdrop-blur-xl">
+        <div class="px-4 lg:px-8 h-16 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <button id="openSidebarBtn"
+              class="lg:hidden inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10"
+              type="button" aria-label="Open sidebar">
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div>
+              <div class="text-sm font-extrabold tracking-[0.16em] uppercase">Bookings</div>
+              <div class="text-[11px] text-white/55">Inbox for website contact / bookings.</div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <button id="refreshBtn"
+              class="rounded-xl border border-white/15 bg-black/20 hover:bg-white/10 px-4 py-2 text-[11px] font-black tracking-[0.18em] uppercase inline-flex items-center gap-2">
+              <i class="fa-solid fa-rotate"></i>
+              Refresh
+            </button>
+
+            <div class="hidden sm:block text-right">
+              <div id="userEmail" class="text-xs text-white/80"></div>
+              <div class="text-[11px] text-white/55">Signed in</div>
+            </div>
+            <div class="h-10 w-10 rounded-xl border border-white/10 bg-white/5 grid place-items-center">
+              <i class="fa-regular fa-user text-white/80"></i>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="px-4 lg:px-8 py-6">
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div class="text-[11px] tracking-[0.18em] uppercase text-white/60">Total</div>
+            <div class="mt-2 text-2xl font-extrabold" id="totalCount">—</div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div class="text-[11px] tracking-[0.18em] uppercase text-white/60">New</div>
+            <div class="mt-2 text-2xl font-extrabold" id="newCount">—</div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-black/20 p-4">
+            <div class="text-[11px] tracking-[0.18em] uppercase text-white/60">Resolved</div>
+            <div class="mt-2 text-2xl font-extrabold" id="resolvedCount">—</div>
+          </div>
+        </section>
+
+        <section class="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4 md:p-5">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div class="md:col-span-2">
+              <label class="block text-[11px] uppercase tracking-[0.14em] text-white/60">Search</label>
+              <div class="mt-2 relative">
+                <span class="absolute inset-y-0 left-3 grid place-items-center text-white/40">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </span>
+                <input id="searchInput"
+                  class="w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-4 py-3 outline-none focus:border-white/30"
+                  placeholder="Search name, email, phone, message..." />
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-[11px] uppercase tracking-[0.14em] text-white/60">Status filter</label>
+              <div class="mt-2 relative">
+                <span class="absolute inset-y-0 left-3 grid place-items-center text-white/40">
+                  <i class="fa-regular fa-circle-check"></i>
+                </span>
+                <select id="statusFilter"
+                  class="w-full rounded-xl border border-white/15 bg-black/30 pl-10 pr-10 py-3 outline-none focus:border-white/30">
+                  <option value="all">All</option>
+                  <option value="new">New</option>
+                  <option value="in_progress">In progress</option>
+                  <option value="resolved">Resolved</option>
+                  <option value="spam">Spam</option>
+                </select>
+                <span class="pointer-events-none absolute inset-y-0 right-3 grid place-items-center text-white/40">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <p id="pageMsg" class="mt-4 text-sm text-red-200/90 hidden"></p>
+        </section>
+
+        <section class="mt-4 rounded-2xl border border-white/10 bg-black/20 p-4 md:p-5">
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-xs font-black tracking-[0.18em] uppercase text-white/85">Requests</h2>
+            <span id="shownCount" class="text-[11px] text-white/55">—</span>
+          </div>
+
+          <div id="listWrap" class="mt-4 space-y-3"></div>
+
+          <div id="emptyState" class="mt-4 rounded-xl border border-white/10 bg-white/5 p-4 text-white/60 hidden">
+            No bookings found.
+          </div>
+        </section>
+
+        <footer class="mt-8 text-[11px] tracking-[0.14em] uppercase text-white/40">
+          Copyright © 2026 — OSB
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="fixed inset-0 z-[60] hidden" aria-hidden="true">
+    <div id="modalOverlay" class="absolute inset-0 bg-black/75 backdrop-blur-sm"></div>
+
+    <div class="relative min-h-screen flex items-center justify-center px-4 py-8">
+      <div class="w-full max-w-3xl rounded-2xl border border-white/10 bg-[#0a0a11] overflow-hidden">
+        <div class="p-4 md:p-5 border-b border-white/10 flex items-center justify-between gap-3">
+          <div>
+            <div id="mName" class="text-sm font-extrabold">—</div>
+            <div id="mMeta" class="text-[11px] text-white/60">—</div>
+          </div>
+
+          <button id="modalCloseBtn"
+            class="inline-flex items-center justify-center h-10 w-10 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10"
+            type="button" aria-label="Close modal">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div class="p-4 md:p-5 space-y-3">
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div class="text-[11px] tracking-[0.14em] uppercase text-white/60">Message</div>
+            <div id="mMessage" class="mt-2 text-[13px] text-white/75 whitespace-pre-line">—</div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <div class="text-[11px] tracking-[0.14em] uppercase text-white/60">Email</div>
+              <a id="mEmail" class="mt-2 inline-block text-[13px] text-white/80 underline decoration-white/20" href="#">—</a>
+            </div>
+            <div>
+              <div class="text-[11px] tracking-[0.14em] uppercase text-white/60">Phone</div>
+              <a id="mPhone" class="mt-2 inline-block text-[13px] text-white/80 underline decoration-white/20" href="#">—</a>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <div class="flex flex-col sm:flex-row gap-3 sm:items-end sm:justify-between">
+              <div class="flex-1">
+                <div class="text-[11px] tracking-[0.14em] uppercase text-white/60">Status</div>
+                <div class="mt-2 relative">
+                  <select id="mStatus"
+                    class="w-full rounded-xl border border-white/15 bg-black/30 px-4 py-3 outline-none focus:border-white/30">
+                    <option value="new">New</option>
+                    <option value="in_progress">In progress</option>
+                    <option value="resolved">Resolved</option>
+                    <option value="spam">Spam</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="flex gap-2">
+                <button id="mSaveBtn"
+                  class="rounded-xl border border-white/20 bg-white/10 hover:bg-white/15 px-4 py-3 text-xs font-black tracking-[0.18em] uppercase inline-flex items-center gap-2">
+                  <i class="fa-solid fa-floppy-disk"></i>
+                  Save
+                </button>
+
+                <button id="mDeleteBtn"
+                  class="rounded-xl border border-red-300/25 bg-red-500/10 hover:bg-red-500/15 px-4 py-3 text-xs font-black tracking-[0.18em] uppercase inline-flex items-center gap-2">
+                  <i class="fa-solid fa-trash"></i>
+                  Delete
+                </button>
+
+                <button id="mCloseBtn2"
+                  class="rounded-xl border border-white/15 bg-black/20 hover:bg-white/10 px-4 py-3 text-xs font-black tracking-[0.18em] uppercase inline-flex items-center gap-2">
+                  <i class="fa-solid fa-xmark"></i>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <p id="modalMsg" class="text-sm text-red-200/90 hidden"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/bookings.js"></script>
+</body>
+</html>

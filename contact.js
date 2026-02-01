@@ -1,10 +1,17 @@
-// Loader
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const SUPABASE_URL = "https://huquhmswcygwtuxmwfhg.supabase.co";
+const SUPABASE_KEY = "sb_publishable_iTAzRpmW5gNYvbETn4IXdg_kJ0mZgju";
+// Public website uses anon key; RLS must allow anon INSERT. [web:162]
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* Loader */
 const loader = document.getElementById("loader");
 window.addEventListener("load", () => {
   setTimeout(() => loader.classList.add("hidden"), 600);
 });
 
-// Explore -> menu overlay
+/* Explore -> menu overlay */
 const page = document.getElementById("page");
 const menuScreen = document.getElementById("menuScreen");
 const exploreBtn = document.getElementById("exploreBtn");
@@ -24,32 +31,66 @@ closeMenuBtn.addEventListener("click", closeMenu);
 menuScreen.addEventListener("click", (e) => { if (e.target === menuScreen) closeMenu(); });
 window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeMenu(); });
 
-// Form (demo submit)
+/* Form -> Supabase insert */
 const form = document.getElementById("contactForm");
 const statusEl = document.getElementById("formStatus");
 
-function setStatus(msg) {
+function setStatus(msg, ok = false) {
   statusEl.textContent = msg;
+  statusEl.style.color = ok ? "rgba(190,255,210,0.95)" : "rgba(255,255,255,0.85)";
 }
 
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const name = form.name.value.trim();
-  const email = form.email.value.trim();
+  const email = (form.email.value || "").trim();
+  const phone = (form.phone.value || "").trim();
+  const preferred_contact = (form.preferred_contact.value || "email").trim();
   const message = form.message.value.trim();
 
-  if (!name || !email || !message) {
-    setStatus("PLEASE FILL ALL FIELDS.");
+  if (!name || !message) {
+    setStatus("PLEASE ENTER YOUR NAME AND MESSAGE.");
     return;
   }
 
-  // Here you can integrate EmailJS / Formspree / your backend.
-  setStatus("SENT (DEMO). CONNECT TO A REAL EMAIL SERVICE.");
-  form.reset();
+  if (preferred_contact === "email" && !email) {
+    setStatus("PLEASE ENTER YOUR EMAIL (YOU SELECTED EMAIL).");
+    return;
+  }
+
+  if (preferred_contact === "phone" && !phone) {
+    setStatus("PLEASE ENTER YOUR PHONE (YOU SELECTED PHONE).");
+    return;
+  }
+
+  setStatus("SENDING...", true);
+
+  try {
+    const payload = {
+      name,
+      email: email || null,
+      phone: phone || null,
+      preferred_contact,
+      message,
+      page: location.pathname,
+      user_agent: navigator.userAgent || null,
+      referrer: document.referrer || null
+    };
+
+    // IMPORTANT: no .select() here, because public form should not read rows back. [web:221]
+    const { error } = await supabase.from("bookings").insert(payload);
+
+    if (error) throw error;
+
+    setStatus("SENT. WE’LL REPLY SOON.", true);
+    form.reset();
+  } catch (err) {
+    setStatus(err?.message || "FAILED TO SEND. PLEASE TRY AGAIN.");
+  }
 });
 
-// Smoke canvas (same style as tour/music)
+/* Smoke canvas (unchanged) */
 const canvas = document.getElementById("bg");
 const ctx = canvas.getContext("2d", { alpha: true });
 

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Boyskido Admin — Login</title>
+
+  <!-- Tailwind via CDN (good for static admin; for production you can build Tailwind later) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Signature font to match branding -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+  <style>
+    /* Small branding touch similar to your main site (dark + glass) */
+    .signature { font-family: "Great Vibes", cursive; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-[#07070b] text-white">
+  <!-- Background -->
+  <div class="absolute inset-0">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.10),transparent_55%)]"></div>
+    <div class="absolute inset-0 opacity-30"
+      style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.8));"></div>
+  </div>
+
+  <main class="relative min-h-screen flex items-center justify-center px-4">
+    <div class="w-full max-w-md">
+      <div class="mb-6 text-center">
+        <h1 class="signature text-6xl leading-none">Boyskido</h1>
+        <p class="mt-2 text-xs tracking-[0.22em] uppercase text-white/70">Admin Dashboard</p>
+      </div>
+
+      <section class="rounded-2xl border border-white/15 bg-black/30 backdrop-blur-xl p-6 shadow-[0_30px_80px_rgba(0,0,0,0.55)]">
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="text-sm font-extrabold tracking-[0.18em] uppercase text-white/90">Sign in</h2>
+          <a href="../index.html" class="text-xs tracking-wide text-white/60 hover:text-white">Back to site</a>
+        </div>
+
+        <form id="loginForm" class="mt-5 space-y-4">
+          <div>
+            <label class="block text-xs uppercase tracking-[0.14em] text-white/70" for="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              autocomplete="email"
+              required
+              class="mt-2 w-full rounded-xl border border-white/15 bg-black/30 px-4 py-3 text-white outline-none focus:border-white/30"
+              placeholder="manager@boyskido.com"
+            />
+          </div>
+
+          <div>
+            <label class="block text-xs uppercase tracking-[0.14em] text-white/70" for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              autocomplete="current-password"
+              required
+              class="mt-2 w-full rounded-xl border border-white/15 bg-black/30 px-4 py-3 text-white outline-none focus:border-white/30"
+              placeholder="••••••••••"
+            />
+          </div>
+
+          <button
+            id="loginBtn"
+            type="submit"
+            class="w-full rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-xs font-black tracking-[0.18em] uppercase hover:bg-white/15 active:translate-y-[1px] transition"
+          >
+            Login
+          </button>
+
+          <p id="msg" class="text-sm text-red-200/90 hidden"></p>
+
+          <p class="text-[11px] leading-relaxed text-white/55">
+            Only authorized management accounts can access this dashboard.
+          </p>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- Supabase JS (ESM) -->
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    // Your Supabase project details
+    const SUPABASE_URL = "https://huquhmswcygwtuxmwfhg.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_iTAzRpmW5gNYvbETn4IXdg_kJ0mZgju";
+
+    // Supabase client can be initialized with a publishable (or anon) key
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY); // [web:21]
+
+    // If already logged in, go straight to dashboard
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) window.location.href = "./dashboard.html";
+
+    const form = document.getElementById("loginForm");
+    const msg = document.getElementById("msg");
+    const loginBtn = document.getElementById("loginBtn");
+
+    function setError(text) {
+      msg.textContent = text;
+      msg.classList.remove("hidden");
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      msg.classList.add("hidden");
+
+      loginBtn.disabled = true;
+      loginBtn.textContent = "Logging in...";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      // Sign in with email + password
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password }); // [web:27]
+
+      loginBtn.disabled = false;
+      loginBtn.textContent = "Login";
+
+      if (error) return setError(error.message || "Login failed.");
+      if (!data?.session) return setError("No session returned. Check Auth settings.");
+
+      window.location.href = "./dashboard.html";
+    });
+  </script>
+</body>
+</html>
